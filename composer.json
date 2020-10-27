@@ -1,0 +1,17 @@
+{
+    "name": "andre/innout",
+    "description": "aplicação web controlar entrada e saida de funcionarios",
+    "type": "project",
+    "authors": [
+        {
+            "name": "ATCamposs",
+            "email": "andre.tatibano@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src"
+        }
+    }
+}
