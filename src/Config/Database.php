@@ -4,6 +4,7 @@ namespace Src\Config;
 
 use PDO;
 use PDOException;
+use PDOStatement;
 
 class Database
 {
@@ -32,6 +33,17 @@ class Database
         } catch (PDOException $e) {
             die('Erro: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * @return PDOStatement|false
+     */
+    public static function getResultFromQuery(string $sql)
+    {
+        $conn = self::getConnection();
+        $result = $conn->query($sql);
+        $conn = null;
+        return $result;
     }
 
     /** como declarar um array
