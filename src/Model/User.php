@@ -5,26 +5,6 @@ namespace Src\Model;
 class User extends Model
 {
     /**
-     * @var string $name
-     */
-    public $name;
-
-    /**
-     * @var string $password
-     */
-    public $password;
-
-    /**
-     * @var string $email
-     */
-    public $email;
-
-    /**
-     * @var string $is_admin
-     */
-    public $is_admin;
-
-    /**
      * @var string $tableName
      */
     protected static $tableName = 'users';

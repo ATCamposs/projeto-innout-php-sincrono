@@ -35,14 +35,14 @@ class Database
         }
     }
 
-    /**
-     * @return PDOStatement|false
-     */
-    public static function getResultFromQuery(string $sql)
+    public static function getResultFromQuery(string $sql): PDOStatement
     {
         $conn = self::getConnection();
         $result = $conn->query($sql);
         $conn = null;
+        if (empty($result)) {
+            die('ERRO: cheque sua consulta SQL');
+        }
         return $result;
     }
 

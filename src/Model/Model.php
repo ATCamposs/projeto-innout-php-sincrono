@@ -2,6 +2,9 @@
 
 namespace Src\Model;
 
+use Src\Config\Database;
+use PDOStatement;
+
 class Model
 {
     /**
@@ -18,11 +21,6 @@ class Model
      * @var array{string, string} $values
      */
     protected $values;
-
-    /**
-     * @var string $value
-     */
-    protected $value;
 
     /**
      * @param array<string, string> $arr
@@ -59,13 +57,14 @@ class Model
 
     /**
      * @param mixed $filters
+     * @return mixed
      */
-    public static function getSelect($filters, string $columns = '*'): string
+    public static function getResultSetFromSelect($filters, string $columns = '*')
     {
         $sql = "SELECT ${columns} FROM " .
             static::$tableName .
             static::getFilters($filters);
-        return $sql;
+        return Database::getResultFromQuery($sql);
     }
 
     /**
@@ -98,5 +97,20 @@ class Model
         }
 
         return $value;
+    }
+
+    /**
+     * @param mixed $filters
+     * @return iterable<int, mixed>
+     */
+    public static function getAll($filters, string $columns = '*')
+    {
+        $objects = [];
+        $results = static::getResultSetFromSelect($filters, $columns);
+        $class = get_called_class();
+        while ($row = $results->fetchObject()) {
+            array_push($objects, new $class($row));
+        }
+        return $objects;
     }
 }
