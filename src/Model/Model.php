@@ -56,4 +56,47 @@ class Model
     {
         $this->values[$key] = $value;
     }
+
+    /**
+     * @param mixed $filters
+     */
+    public static function getSelect($filters, string $columns = '*'): string
+    {
+        $sql = "SELECT ${columns} FROM " .
+            static::$tableName .
+            static::getFilters($filters);
+        return $sql;
+    }
+
+    /**
+     * @param array{int, string} $filters
+     */
+    private static function getFilters($filters): string
+    {
+        print_r($filters);
+        $sql = '';
+        if (!empty($filters)) {
+            $sql .= " WHERE 1 = 1";
+            foreach ($filters as $column => $value) {
+                $sql .= " AND ${column} = " . static::getFormatedValue($value);
+            }
+        }
+        return $sql;
+    }
+
+    /**
+     * @param (int|string) $value
+     * @return (int|string)
+     */
+    private static function getFormatedValue($value)
+    {
+        if (empty($value)) {
+            return "null";
+        }
+        if (gettype($value) === 'string') {
+            return "'${value}'";
+        }
+
+        return $value;
+    }
 }

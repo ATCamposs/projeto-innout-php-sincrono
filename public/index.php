@@ -10,3 +10,5 @@ print_r($user->email);
 $user->email = 'teste.com';
 print_r($user->email);
 echo 'Fim!';
+echo '<br>';
+echo $user->getSelect(['id' => 1, 'name' => 'andre']);
