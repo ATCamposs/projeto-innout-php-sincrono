@@ -1,17 +1,12 @@
 <?php
 
-namespace Home;
-
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/Config/Config.php';
 
 use Src\Config\Database;
+use Src\Model\User;
 
-$sql = 'select * from users';
-$result = Database::getResultFromQuery($sql);
-
-if (!empty($result)) {
-    while ($row = $result->fetch()) {
-        print_r($row);
-        echo '<br>';
-    }
-}
+$user = new User(['name' => 'André', 'email' => 'andre.email@email.com']);
+print_r($user->email);
+$user->email = 'teste.com';
+print_r($user->email);
+echo 'Fim!';
