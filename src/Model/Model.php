@@ -42,15 +42,21 @@ class Model
         }
     }
 
-    public function __get(string $key): string
+    /**
+     *
+     * @return (string|null)
+     */
+    public function __get(string $key)
     {
         return $this->values[$key];
     }
 
     /**
      * @param mixed $key
+     * @param mixed $value
+     *
      */
-    public function __set($key, string $value): void
+    public function __set($key, $value): void
     {
         $this->values[$key] = $value;
     }
@@ -103,7 +109,7 @@ class Model
      * @param mixed $filters
      * @return iterable<int, mixed>
      */
-    public static function getAll($filters, string $columns = '*')
+    public static function get($filters, string $columns = '*')
     {
         $objects = [];
         $results = static::getResultSetFromSelect($filters, $columns);
@@ -112,5 +118,16 @@ class Model
             array_push($objects, new $class($row));
         }
         return $objects;
+    }
+
+    /**
+     * @param mixed $filters
+     * @return mixed
+     */
+    public static function getOne($filters, string $columns = '*')
+    {
+        $class = get_called_class();
+        $result = static::getResultSetFromSelect($filters, $columns);
+        return $result ? new $class($result->fetchObject()) : null;
     }
 }
