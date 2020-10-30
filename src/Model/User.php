@@ -5,6 +5,11 @@ namespace Src\Model;
 class User extends Model
 {
     /**
+     * @var string $name
+     */
+    public static $name;
+
+    /**
      * @var string $tableName
      */
     protected static $tableName = 'users';

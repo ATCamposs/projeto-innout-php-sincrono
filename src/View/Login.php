@@ -1,6 +1,10 @@
+<?php
+
+use Src\View\Template\Messages;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,9 +27,14 @@
                 <i class="icofont-runner-alt-1 ml-2"></i>
             </div>
             <div class="card-body">
+                <?php if (!empty($exception)) {
+                    (new Messages())->errorMessage($exception);
+                }
+                ?>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" class="form-control" value="<?= $_POST['email'] ?>" placeholder="Informe o e-mail" autofocus>
+                    <input type="email" name="email" id="email" class="form-control" 
+                    value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>

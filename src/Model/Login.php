@@ -2,7 +2,7 @@
 
 namespace Src\Model;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Src\Exceptions\AppException;
 
 class Login extends Model
 {
@@ -16,14 +16,17 @@ class Login extends Model
      */
     protected static $password;
 
-    public function checkLogin(): object
+    public function checkLogin(): User
     {
         $user = User::getOne(['email' => $this->email]);
         if (!empty($user)) {
+            if ($user->end_date) {
+                throw new AppException('Usuário está desligado da empresa.');
+            }
             if (password_verify($this->password, $user->password)) {
                 return $user;
             }
         }
-        throw new Exception();
+        throw new AppException('Usuário/Senha inválidos.');
     }
 }
