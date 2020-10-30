@@ -16,12 +16,12 @@ class Login extends Model
      */
     protected static $password;
 
-    public function checkLogin(): bool
+    public function checkLogin(): object
     {
         $user = User::getOne(['email' => $this->email]);
         if (!empty($user)) {
             if (password_verify($this->password, $user->password)) {
-                return true;
+                return $user;
             }
         }
         throw new Exception();
