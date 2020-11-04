@@ -14,7 +14,7 @@ class LoginController
         if (count($_POST) > 0) {
             $exception = $this->tryLogin();
         }
-        (new Loader())->loadView('Login', $_POST + ['exception' => $exception]);
+        (new Loader())->loadView('login', $_POST + ['exception' => $exception]);
     }
 
     private function tryLogin(): ?AppException
@@ -22,6 +22,7 @@ class LoginController
         $login = new Login($_POST);
         try {
             $user = $login->checkLogin();
+            header("Location: day_records.php");
             return null;
         } catch (AppException $e) {
             $exception = $e;
