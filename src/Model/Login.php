@@ -3,6 +3,7 @@
 namespace Src\Model;
 
 use Src\Exceptions\AppException;
+use Src\Exceptions\ValidationException;
 
 class Login extends Model
 {
@@ -19,6 +20,7 @@ class Login extends Model
     public function checkLogin(): User
     {
         $user = User::getOne(['email' => $this->email]);
+        $this->validate();
         if (!empty($user)) {
             if ($user->end_date) {
                 throw new AppException('Usuário está desligado da empresa.');
@@ -28,5 +30,21 @@ class Login extends Model
             }
         }
         throw new AppException('Usuário/Senha inválidos.');
+    }
+
+    public function validate(): void
+    {
+        $email = $this->email;
+        $pass = $this->password;
+        $errors = [];
+        if (empty($email)) {
+            $errors['email'] = 'E-mail é um campo obrigatório.';
+        }
+        if (empty($pass)) {
+            $errors['password'] = 'Por favor, informe a senha.';
+        }
+        if (count($errors) > 0) {
+            throw new ValidationException($errors);
+        }
     }
 }

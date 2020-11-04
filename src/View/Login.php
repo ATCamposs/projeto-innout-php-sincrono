@@ -2,9 +2,14 @@
 
 use Src\View\Template\Messages;
 
+if (isset($exception) && method_exists($exception, 'get')) {
+    $email_exception = !empty($exception->get('email')) ? $exception->get('email') : null;
+    $password_exception = !empty($exception->get('password')) ? $exception->get('password') : null;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,12 +38,17 @@ use Src\View\Template\Messages;
                 ?>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" class="form-control" 
-                    value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
+                    <input type="email" name="email" id="email" class="form-control <?= !empty($email_exception) ? 'is-invalid' : '' ?>" value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
+                    <div class="invalid-feedback">
+                        <?= $email_exception ?>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Informe a senha">
+                    <input type="password" name="password" id="password" class="form-control <?= !empty($password_exception) ? 'is-invalid' : '' ?>" placeholder="Informe a senha">
+                    <div class="invalid-feedback">
+                        <?= $password_exception ?>
+                    </div>
                 </div>
             </div>
             <div class="card-footer">

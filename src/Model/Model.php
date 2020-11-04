@@ -2,8 +2,8 @@
 
 namespace Src\Model;
 
+use PDO;
 use Src\Config\Database;
-use PDOStatement;
 
 class Model
 {
@@ -42,11 +42,7 @@ class Model
         }
     }
 
-    /**
-     *
-     * @return (string|null)
-     */
-    public function __get(string $key)
+    public function __get(string $key): ?string
     {
         return $this->values[$key];
     }
@@ -78,7 +74,6 @@ class Model
      */
     private static function getFilters($filters): string
     {
-        print_r($filters);
         $sql = '';
         if (!empty($filters)) {
             $sql .= " WHERE 1 = 1";
@@ -114,7 +109,7 @@ class Model
         $objects = [];
         $results = static::getResultSetFromSelect($filters, $columns);
         $class = get_called_class();
-        while ($row = $results->fetchObject()) {
+        while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
             array_push($objects, new $class($row));
         }
         return $objects;

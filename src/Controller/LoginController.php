@@ -17,17 +17,14 @@ class LoginController
         (new Loader())->loadView('Login', $_POST + ['exception' => $exception]);
     }
 
-    /**
-     * @return (string)
-     */
-    private function tryLogin()
+    private function tryLogin(): ?AppException
     {
         $login = new Login($_POST);
         try {
             $user = $login->checkLogin();
-            return '';
+            return null;
         } catch (AppException $e) {
-            $exception = $e->getMessage();
+            $exception = $e;
             return $exception;
         }
     }
