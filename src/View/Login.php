@@ -40,14 +40,14 @@ if (isset($exception) && method_exists($exception, 'get')) {
                     <label for="email">E-mail</label>
                     <input type="email" name="email" id="email" class="form-control <?= !empty($email_exception) ? 'is-invalid' : '' ?>" value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
                     <div class="invalid-feedback">
-                        <?= $email_exception ?>
+                        <?= !empty($email_exception) ? $email_exception : '' ?>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
                     <input type="password" name="password" id="password" class="form-control <?= !empty($password_exception) ? 'is-invalid' : '' ?>" placeholder="Informe a senha">
                     <div class="invalid-feedback">
-                        <?= $password_exception ?>
+                        <?= !empty($password_exception) ? $password_exception : '' ?>
                     </div>
                 </div>
             </div>
