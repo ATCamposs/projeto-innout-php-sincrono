@@ -27,7 +27,7 @@ class Loader
         }
         $final_file = realpath(dirname(__FILE__) . '/../View/' . $viewName . '.php');
         if (is_string($final_file) && file_exists($final_file)) {
-            require_once(realpath(dirname(__FILE__) . '/../View/' . $viewName . '.php'));
+            require_once($final_file);
         }
         if (!is_string($final_file)) {
             var_dump("Arquivo inexistente");
@@ -46,7 +46,9 @@ class Loader
         }
         $final_file = realpath(dirname(__FILE__) . '/../View/' . $viewName . '.php');
         if (is_string($final_file) && file_exists($final_file)) {
-            require_once(realpath(dirname(__FILE__) . '/../View/' . $viewName . '.php'));
+            require_once(realpath(dirname(__FILE__) . '/../View/Template/header.php'));
+            require_once($final_file);
+            require_once(realpath(dirname(__FILE__) . '/../View/Template/footer.php'));
         }
         if (!is_string($final_file)) {
             var_dump("Arquivo inexistente");
