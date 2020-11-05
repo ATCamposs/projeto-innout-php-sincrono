@@ -19,9 +19,11 @@ class LoginController
 
     private function tryLogin(): ?AppException
     {
+        session_start();
         $login = new Login($_POST);
         try {
             $user = $login->checkLogin();
+            $_SESSION['user'] = $user;
             header("Location: day_records.php");
             return null;
         } catch (AppException $e) {

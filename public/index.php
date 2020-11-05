@@ -1,5 +1,6 @@
 <?php
 
+use Src\Config\Session;
 use Src\Controller\DayRecordsController;
 use Src\Controller\LoginController;
 
@@ -18,4 +19,9 @@ if ($uri === '/' || $uri === '' || $uri === '/login.php' || $uri === '/index.php
 if ($uri === '/day_records.php') {
     $url = new DayRecordsController();
     $url->index();
+}
+
+if ($uri === '/logout.php') {
+    $url = new Session();
+    $url->sessionLogout();
 }
