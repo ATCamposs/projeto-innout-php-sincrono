@@ -55,4 +55,12 @@ class Loader
             var_dump("Arquivo inexistente");
         }
     }
+
+    public function loadTitle(string $title, string $subtitle, string $icon): void
+    {
+        $title = $title;
+        $subtitle = $subtitle;
+        $icon = $icon;
+        require_once(realpath(dirname(__FILE__) . '/../View/Template/title.php'));
+    }
 }

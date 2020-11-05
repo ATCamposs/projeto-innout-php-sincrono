@@ -1,14 +1,25 @@
+<?php
+
+use Src\Config\Loader;
+use Src\View\Template\Messages;
+
+?>
+
 <main class="content">
-    <div class="content-title mb-4">
-        <i class="icon icofont-check-all mr-2"></i>
-        <div>
-            <h1>Registrar Ponto</h1>
-            <h2>Mantenha seu ponto consistente !</h2>
-        </div>
-    </div>
+    <?php
+
+    (new Loader())->loadTitle(
+        'Registrar Ponto',
+        'Mantenha seu ponto consistente !',
+        'icofont-check-alt'
+    );
+    if (!empty($exception)) {
+        (new Messages())->errorMessage($exception);
+    }
+    ?>
     <div class="card">
         <div class="card-header">
-            <h3>10 de Janeiro de 2025</h3>
+            <h3> <?= isset($today) ? $today : null ?></h3>
             <p class="mb-0">Os batimentos efetuados hoje </p>
         </div>
         <div class="card-body">
