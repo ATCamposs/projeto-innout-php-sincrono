@@ -8,12 +8,17 @@ use Src\Config\Database;
 class Model
 {
     /**
+     * @var string $id
+     */
+    protected static $id;
+
+    /**
      * @var string $tableName
      */
     protected static $tableName;
 
     /**
-     * @var array{int, string} $columns
+     * @var mixed $columns
      */
     protected static $columns;
 
@@ -124,5 +129,17 @@ class Model
         $class = get_called_class();
         $result = static::getResultSetFromSelect($filters, $columns);
         return $result ? new $class($result->fetchObject()) : null;
+    }
+
+    public function save(): void
+    {
+        $sql = 'INSERT INTO ' . static::$tableName . '(' .
+            implode(", ", static::$columns) . ") VALUES (";
+        foreach (static::$columns as $col) {
+            $sql .= static::getFormatedValue($this->$col) . ',';
+        }
+        $sql[strlen($sql) - 1] = ')';
+        $id = Database::executeSQL($sql);
+        $this->id = $id;
     }
 }

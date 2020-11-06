@@ -46,7 +46,13 @@ class Database
         return $result;
     }
 
-    /** como declarar um array
-     * @param array{host: string, username: string, password:string, database:string} $env
-     */
+    public static function executeSQL(string $sql): string
+    {
+        $conn = self::getConnection();
+        $prepared_query = $conn->prepare($sql);
+        $prepared_query->execute();
+        $id = $conn->lastInsertId();
+        $conn = null;
+        return $id;
+    }
 }
