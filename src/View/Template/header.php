@@ -28,7 +28,7 @@
         <div class="dropdown">
             <div class="dropdown-button">
                 <img class="avatar" 
-                src="<?= "https://www.gravatar.com/avatar.php?gravatar_id=" . 
+                src="<?= "https://www.gravatar.com/avatar.php?gravatar_id=" .
                 md5(strtolower(trim($_SESSION['user']->email)))?> alt="user">
                 <span class="ml-3">
                     <?= $_SESSION['user']->name ?>

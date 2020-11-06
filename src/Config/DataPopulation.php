@@ -45,34 +45,36 @@ function getNextDay($date): DateTime
     return $inputDate;
 }
 
+$regularDayTemplate = [
+    'time1' => '08:00:00',
+    'time2' => '12:00:00',
+    'time3' => '13:00:00',
+    'time4' => '17:00:00',
+    'worked_time' => 60 * 60 * 8
+];
+
+$extraHourDayTemplate = [
+    'time1' => '08:00:00',
+    'time2' => '12:00:00',
+    'time3' => '13:00:00',
+    'time4' => '18:00:00',
+    'worked_time' => (60 * 60 * 8) + 3600
+];
+
+$lazyDayTemplate = [
+    'time1' => '08:30:00',
+    'time2' => '12:00:00',
+    'time3' => '13:00:00',
+    'time4' => '17:00:00',
+    'worked_time' => (60 * 60 * 8) - 1800
+];
 
 /** @return mixed */
 function getDayTemplateByOdds(int $regularRate, int $extraRate, int $lazyRate)
 {
-    $regularDayTemplate = [
-        'time1' => '08:00:00',
-        'time2' => '12:00:00',
-        'time3' => '13:00:00',
-        'time4' => '17:00:00',
-        'worked_time' => 60 * 60 * 8
-    ];
-
-    $extraHourDayTemplate = [
-        'time1' => '08:00:00',
-        'time2' => '12:00:00',
-        'time3' => '13:00:00',
-        'time4' => '18:00:00',
-        'worked_time' => (60 * 60 * 8) + 3600
-    ];
-
-    $lazyDayTemplate = [
-        'time1' => '08:30:00',
-        'time2' => '12:00:00',
-        'time3' => '13:00:00',
-        'time4' => '17:00:00',
-        'worked_time' => (60 * 60 * 8) - 1800
-    ];
-
+    global $regularDayTemplate;
+    global $extraHourDayTemplate;
+    global $lazyDayTemplate;
     $value = rand(0, 100);
     if ($value <= $regularRate) {
         return $regularDayTemplate;
@@ -85,7 +87,10 @@ function getDayTemplateByOdds(int $regularRate, int $extraRate, int $lazyRate)
     }
 }
 
-function populateWorkingHours($userId, $initialDate, $regularRate, $extraRate, $lazyRate)
+/**
+ * @param (string|DateTime) $initialDate
+ */
+function populateWorkingHours(int $userId, $initialDate, int $regularRate, int $extraRate, int $lazyRate): void
 {
     $currentDate = $initialDate;
     $today = new DateTime();
