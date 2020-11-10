@@ -4,6 +4,7 @@ namespace Src\Model;
 
 use DateInterval;
 use DateTime;
+use DateTimeImmutable;
 use Src\Exceptions\AppException;
 use Src\Model\Model;
 
@@ -106,6 +107,43 @@ class WorkingHours extends Model
         }
 
         return sumIntervals($part1, $part2);
+    }
+
+    /** @return DateInterval|false */
+    public function getLunchInterval()
+    {
+        [, $t2, $t3,] = $this->getTimes();
+        $breakInterval = new DateInterval('PT0S');
+
+        if ($t2 && $t2 instanceof DateTime) {
+            $breakInterval = $t2->diff(new DateTime());
+        }
+        if ($t3 && $t3 instanceof DateTime && $t2 instanceof DateTime) {
+            $breakInterval = $t2->diff($t3);
+        }
+        return $breakInterval;
+    }
+
+    public function getExitTime(): DateTime
+    {
+        [$t1,,, $t4] = $this->getTimes();
+        $workday = date_interval_create_from_date_string('8 hours');
+        $defaultBreakInterval = date_interval_create_from_date_string('1 hour + 30 minutes');
+        if (!$t1) {
+            $totalTime =  (new DateTime())->add($workday);
+            $totalTime->add($defaultBreakInterval);
+            return $totalTime;
+        }
+        if ($t4) {
+            return $t4;
+        }
+        $lunchInterval = $this->getLunchInterval();
+        if ($lunchInterval instanceof DateInterval) {
+            $totalInterval = substracIntervals($defaultBreakInterval, $lunchInterval);
+            $total = sumIntervals($workday, $totalInterval);
+            return $t1->add($total);
+        }
+        return new DateTime();
     }
 
     /** @return array<int, Datetime|false|null> */
