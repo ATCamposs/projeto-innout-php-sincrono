@@ -5,6 +5,7 @@ namespace Src\Controller;
 use DateTime;
 use Src\Config\Loader;
 use Src\Config\Session;
+use Src\Model\WorkingHours;
 
 class DayRecordsController
 {
@@ -15,6 +16,17 @@ class DayRecordsController
         $date = (new DateTime())->getTimestamp();
         $today = strftime('%d de %B de %Y', $date);
         $exception = '';
-        (new Loader())->loadTemplateView('day_records', $_POST + ['exception' => $exception] + ['today' => $today]);
+
+        $user = $_SESSION['user'];
+        $records = WorkingHours::loadFromUserAndDate($user->id, date('Y-m-d'));
+
+        (new Loader())->loadTemplateView(
+            'day_records',
+            $_POST + [
+                'exception' => $exception,
+                'today' => $today,
+                'records' => $records
+            ]
+        );
     }
 }

@@ -1,2 +1,6 @@
 includes:
     - vendor/symplify/coding-standard/packages/object-calisthenics/config/object-calisthenics-rules.neon
+parameters:
+	bootstrapFiles:
+		- vendor/autoload.php
+		- public/index.php

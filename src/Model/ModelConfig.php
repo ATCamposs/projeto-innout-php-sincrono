@@ -5,6 +5,11 @@ namespace Src\Model;
 class ModelConfig
 {
     /**
+     * @var string $id
+     */
+    protected static $id;
+
+    /**
      * @var string $tableName
      */
     protected static $tableName;

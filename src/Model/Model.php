@@ -76,7 +76,7 @@ class Model extends ModelConfig
         return $result ? new $class($result->fetchObject()) : null;
     }
 
-    public function save(): void
+    public function insert(): void
     {
         $sql = 'INSERT INTO ' . static::$tableName . '(' .
             implode(", ", static::$columns) . ") VALUES (";
@@ -85,5 +85,16 @@ class Model extends ModelConfig
         }
         $sql[strlen($sql) - 1] = ')';
         $id = Database::executeSQL($sql);
+    }
+
+    public function update(): void
+    {
+        $sql = "UPDATE " . static::$tableName . " SET ";
+        foreach (static::$columns as $col) {
+            $sql .= " ${col} = " . static::getFormatedValue($this->$col) . ",";
+        }
+        $sql[strlen($sql) - 1] = ' ';
+        $sql  .= "WHERE id = {$this->id}";
+        Database::executeSQL($sql);
     }
 }
