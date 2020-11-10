@@ -30,3 +30,30 @@ function getNextDay($date): DateTime
     $inputDate->modify('+1 day');
     return $inputDate;
 }
+
+function sumIntervals(DateInterval $interval1, DateInterval $interval2): DateInterval
+{
+    $date = new DateTime('00:00:00');
+    $date->add($interval1);
+    $date->add($interval2);
+    return (new DateTime('00:00:00'))->diff($date);
+}
+
+function substracIntervals(DateInterval $interval1, DateInterval $interval2): DateInterval
+{
+    $date = new DateTime('00:00:00');
+    $date->add($interval1);
+    $date->sub($interval2);
+    return (new DateTime('00:00:00'))->diff($date);
+}
+
+function getDateFromInterval(DateInterval $interval): DateTime
+{
+    return new DateTime($interval->format('%H:%i:%s'));
+}
+
+/** @return DateTime|false */
+function getDateFromString(string $str)
+{
+    return date_create_from_format('H:i:s', $str);
+}
