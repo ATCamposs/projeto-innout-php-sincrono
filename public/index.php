@@ -4,6 +4,7 @@ use Src\Config\Session;
 use Src\Controller\DayRecordsController;
 use Src\Controller\InNOut;
 use Src\Controller\LoginController;
+use Src\Controller\MonthlyReportController;
 
 require_once __DIR__ . '/../src/Config/Config.php';
 
@@ -36,4 +37,9 @@ if ($uri === '/registrar_ponto.php') {
 if ($uri === '/registro_forcado.php') {
     $url = new InNOut();
     $url->forcedRegister();
+}
+
+if ($uri === '/monthly_report.php') {
+    $url = new MonthlyReportController();
+    $url->index();
 }

@@ -25,9 +25,15 @@ class Model extends ModelConfig
     private static function getFilters($filters): string
     {
         $sql = '';
-        if (!empty($filters)) {
-            $sql .= " WHERE 1 = 1";
-            foreach ($filters as $column => $value) {
+        if (empty($filters)) {
+            return $sql;
+        }
+        $sql .= " WHERE 1 = 1";
+        foreach ($filters as $column => $value) {
+            if ($column == 'raw') {
+                $sql .= " AND {$value}";
+            }
+            if ($column != 'raw') {
                 $sql .= " AND ${column} = " . static::getFormatedValue($value);
             }
         }

@@ -57,3 +57,35 @@ function getDateFromString(string $str)
 {
     return date_create_from_format('H:i:s', $str);
 }
+
+function getLastDayOfMonth(DateTime $date): DateTime
+{
+    $time = getDateAsDateTime($date)->getTimestamp();
+    return new DateTime(date('Y-m-t', $time));
+}
+
+function getFirstDayOfMonth(DateTime $date): DateTime
+{
+    $time = getDateAsDateTime($date)->getTimestamp();
+    return new DateTime(date('Y-m-1', $time));
+}
+
+function getSecondsFromDateInterval(DateInterval $interval): int
+{
+    $d1 = new DateTimeImmutable();
+    $d2 = $d1->add($interval);
+    return $d2->getTimestamp() - $d1->getTimestamp();
+}
+
+function isPastWorkday(string $date): bool
+{
+    return !isWeekend($date) && isBefore($date, new DateTime());
+}
+
+function getTimeStringFromSeconds(int $seconds): string
+{
+    $hour = intdiv($seconds, 3600);
+    $minute = intdiv($seconds % 3600, 60);
+    $sec = $seconds - ($hour * 3600) - ($minute * 60);
+    return sprintf('%02d:%02d:%02d', $hour, $minute, $sec);
+}

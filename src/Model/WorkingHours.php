@@ -5,6 +5,7 @@ namespace Src\Model;
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
+use PDO;
 use Src\Exceptions\AppException;
 use Src\Model\Model;
 
@@ -23,6 +24,9 @@ class WorkingHours extends Model
 
     /** @var string $time4 */
     public $time4;
+
+    /** @var int $worked_time */
+    public $worked_time;
 
     /**
      * @var array{string, string} $columns
@@ -90,7 +94,7 @@ class WorkingHours extends Model
 
         $this->$timeColumn = $time;
         $id = $this->id;
-
+        $this->worked_time = \getSecondsFromDateInterval($this->getWorkedInterval());
         if (!empty($id)) {
             $this->update();
         }
@@ -156,6 +160,26 @@ class WorkingHours extends Model
             return $t1->add($total);
         }
         return new DateTime();
+    }
+
+    /** @return array<int|string, WorkingHours> */
+    public static function getMonthlyReport(int $userId, DateTime $date)
+    {
+        $registries = [];
+        $startDate = \getFirstDayOfMonth($date)->format('Y-m-d');
+        $endDate = \getLastDayOfMonth($date)->format('Y-m-d');
+
+        $result = static::getResultSetFromSelect([
+            'user_id' => $userId,
+            'raw' => "work_date between '{$startDate}' AND '{$endDate}'"
+        ]);
+
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $registries[$row['work_date']] = new WorkingHours($row);
+            }
+        }
+        return $registries;
     }
 
     /** @return array<int, Datetime|false|null> */
