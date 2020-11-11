@@ -69,6 +69,18 @@ class WorkingHours extends Model
         return null;
     }
 
+    public function getActiveClock(): ?string
+    {
+        $nextTime = $this->getNextTime();
+        if ($nextTime == 'time1' || $nextTime == 'time3') {
+            return 'exitTime';
+        }
+        if ($nextTime == 'time2' || $nextTime == 'time4') {
+            return 'workedInterval';
+        }
+        return null;
+    }
+
     public function innout(string $time): void
     {
         $timeColumn = $this->getNextTime();
@@ -87,7 +99,7 @@ class WorkingHours extends Model
         }
     }
 
-    private function getWorkedInterval(): DateInterval
+    public function getWorkedInterval(): DateInterval
     {
         [$t1, $t2, $t3, $t4] = $this->getTimes();
         $part1 = new DateInterval('PT0S');

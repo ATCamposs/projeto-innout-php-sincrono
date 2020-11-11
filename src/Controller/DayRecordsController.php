@@ -19,14 +19,15 @@ class DayRecordsController
 
         $user = $_SESSION['user'];
         $records = WorkingHours::loadFromUserAndDate($user->id, date('Y-m-d'));
+        $workedInterval = $records->getWorkedInterval();
+        $workedInterval = $workedInterval->format('%H:%I:%S');
+        $exitTime = $records->getExitTime();
+        $exitTime = $exitTime->format('H:i:s');
 
-        (new Loader())->loadTemplateView(
-            'day_records',
-            $_POST + [
-                'exception' => $exception,
-                'today' => $today,
-                'records' => $records
-            ]
-        );
+        (new Loader())->loadTemplateView('day_records', $_POST + [
+            'exception' => $exception, 'today' => $today, 'records' => $records,
+            'workedInterval' => $workedInterval, 'exitTime' => $exitTime,
+            'activeClock' => $records->getActiveClock()
+        ]);
     }
 }

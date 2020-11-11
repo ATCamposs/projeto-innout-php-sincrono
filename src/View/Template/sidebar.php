@@ -35,8 +35,7 @@
         <div class="sidebar-widget">
             <i class="icon icofont-hour-glass text-primary"></i>
             <div class="info">
-                <span class="main text-primary"
-                    <?= (isset($activeClock) && $activeClock === 'workedInterval') ? 'active-clock' : '' ?>>
+                <span class="main text-primary" <?= (isset($activeClock) && $activeClock === 'workedInterval') ? 'active-clock' : '' ?>>
                     <?= isset($workedInterval) ? $workedInterval : null ?>
                 </span>
                 <span class="label text-muted">Horas Trabalhadas</span>
@@ -46,8 +45,7 @@
         <div class="sidebar-widget">
             <i class="icon icofont-ui-alarm text-danger"></i>
             <div class="info">
-                <span class="main text-danger"
-                    <?= (isset($activeClock) && $activeClock === 'exitTime') ? 'active-clock' : '' ?>>
+                <span class="main text-danger" <?= (isset($activeClock) && $activeClock === 'exitTime') ? 'active-clock' : '' ?>>
                     <?= isset($exitTime) ? $exitTime : null ?>
                 </span>
                 <span class="label text-muted">Hora de Saída</span>
