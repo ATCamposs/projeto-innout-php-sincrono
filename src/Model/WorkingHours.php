@@ -28,6 +28,9 @@ class WorkingHours extends Model
     /** @var int $worked_time */
     public $worked_time;
 
+    /** @var string $work_date */
+    public $work_date;
+
     /**
      * @var array{string, string} $columns
      */
@@ -160,6 +163,20 @@ class WorkingHours extends Model
             return $t1->add($total);
         }
         return new DateTime();
+    }
+
+    public function getBalance(): string
+    {
+        if (
+            $this->time1 && !isPastWorkday($this->work_date) ||
+            $this->worked_time == 60 * 60 * 8
+        ) {
+            return '-';
+        }
+        $balance = $this->worked_time - 60 * 60 * 8;
+        $balanceString = \getTimeStringFromSeconds(abs($balance));
+        $sign = $this->worked_time >= 60 * 60 * 8 ? '+ ' : '- ';
+        return "{$sign}{$balanceString}";
     }
 
     /** @return array<int|string, WorkingHours> */
