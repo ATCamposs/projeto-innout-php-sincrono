@@ -3,6 +3,7 @@
 namespace Src\Model;
 
 use PDO;
+use PhpParser\Node\Stmt\Static_;
 use Src\Config\Database;
 
 class Model extends ModelConfig
@@ -102,5 +103,12 @@ class Model extends ModelConfig
         $sql[strlen($sql) - 1] = ' ';
         $sql  .= "WHERE id = {$this->id}";
         Database::executeSQL($sql);
+    }
+
+    /** @param array<string, string> $filters*/
+    public static function getCount($filters): int
+    {
+        $result = static::getResultSetFromSelect($filters, 'count(*) as count');
+        return $result->fetch(PDO::FETCH_ASSOC)['count'];
     }
 }

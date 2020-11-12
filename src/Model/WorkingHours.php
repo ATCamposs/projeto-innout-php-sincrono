@@ -6,6 +6,7 @@ use DateInterval;
 use DateTime;
 use DateTimeImmutable;
 use PDO;
+use Src\Config\Database;
 use Src\Exceptions\AppException;
 use Src\Model\Model;
 
@@ -209,5 +210,36 @@ class WorkingHours extends Model
         $this->time3 ? array_push($times, getDateFromString($this->time3)) : array_push($times, null);
         $this->time4 ? array_push($times, getDateFromString($this->time4)) : array_push($times, null);
         return $times;
+    }
+
+    /** @return array<int, string> */
+    public static function getAbsentUsers()
+    {
+        $today = new DateTime();
+        $result = (new Database())->getResultFromQuery(
+            "SELECT name FROM users 
+            WHERE end_date is NULL
+            AND id NOT IN (
+                SELECT user_id FROM working_hours
+                WHERE work_date = '{$today->format('Y-m-d')}'
+                AND time1 IS NOT NULL)"
+        );
+        $absentUsers = [];
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($absentUsers, $row['name']);
+        }
+
+        return $absentUsers;
+    }
+
+    public static function getWorkedTimeInMonth(string $yearAndMonth): int
+    {
+        $startDate = (new DateTime("{$yearAndMonth}-1"));
+        $endDate = \getLastDayOfMonth($startDate)->format('Y-m-d');
+        $startDate = $startDate->format('Y-m-d');
+        $result = static::getResultSetFromSelect([
+            'raw' => "work_date BETWEEN '{$startDate}' AND '{$endDate}'"
+        ], "sum(worked_time) as sum");
+        return $result->fetch(PDO::FETCH_ASSOC)['sum'];
     }
 }

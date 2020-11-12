@@ -19,6 +19,7 @@ class MonthlyReportController
         $users = null;
         $selectedUserId = $_SESSION['user']->id;
         $user = $_SESSION['user'];
+
         if ($user->is_admin) {
             $users = User::get('');
             $selectedUserId = $_POST['user'] ?? $user->id;
@@ -72,6 +73,7 @@ class MonthlyReportController
             'balance' => "{$sign}{$balance}",
             'periods' => $periods,
             'users' => $users,
+            'user' => $user,
             'selectedUserId' => $selectedUserId
         ]);
     }
