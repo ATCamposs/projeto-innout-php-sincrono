@@ -38,14 +38,18 @@ if (isset($exception) && method_exists($exception, 'get')) {
                 ?>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" class="form-control <?= !empty($email_exception) ? 'is-invalid' : '' ?>" value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
+                    <input type="email" name="email" id="email"
+                    class="form-control <?= !empty($email_exception) ? 'is-invalid' : '' ?>"
+                    value="<?= !empty($email) ? $email : '' ?>" placeholder="Informe o e-mail" autofocus>
                     <div class="invalid-feedback">
                         <?= !empty($email_exception) ? $email_exception : '' ?>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" name="password" id="password" class="form-control <?= !empty($password_exception) ? 'is-invalid' : '' ?>" placeholder="Informe a senha">
+                    <input type="password" name="password" id="password"
+                    class="form-control <?= !empty($password_exception) ? 'is-invalid' : '' ?>"
+                    placeholder="Informe a senha">
                     <div class="invalid-feedback">
                         <?= !empty($password_exception) ? $password_exception : '' ?>
                     </div>

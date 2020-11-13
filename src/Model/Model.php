@@ -8,6 +8,8 @@ use Src\Config\Database;
 
 class Model extends ModelConfig
 {
+    /** @var array<int, string> $values */
+    protected $values = [];
     /**
      * @param mixed $filters
      * @return mixed
@@ -92,6 +94,12 @@ class Model extends ModelConfig
         }
         $sql[strlen($sql) - 1] = ')';
         $id = Database::executeSQL($sql);
+    }
+
+    /** @return array<int, string> */
+    public function getValues()
+    {
+        return $this->values;
     }
 
     public function update(): void

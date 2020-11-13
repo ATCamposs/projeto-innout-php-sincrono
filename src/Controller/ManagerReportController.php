@@ -13,7 +13,7 @@ class ManagerReportController
     public function index(): void
     {
         session_start();
-        (new Session())->requireValidSession();
+        (new Session())->requireValidSession(true);
         $activeUsersCount = User::getActiveUsersCount();
         $absentUsers = WorkingHours::getAbsentUsers();
         $yearAndMonth = (new DateTime())->format('Y-m');

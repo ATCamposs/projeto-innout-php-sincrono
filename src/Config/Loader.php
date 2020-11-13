@@ -8,7 +8,7 @@ class Loader
     {
         $final_file = realpath(dirname(__FILE__) . '/../Model/' . $modelName . '.php');
         if (is_string($final_file) && file_exists($final_file)) {
-                require_once(realpath(dirname(__FILE__) . '/../Model/' . $modelName . '.php'));
+            require_once(realpath(dirname(__FILE__) . '/../Model/' . $modelName . '.php'));
         }
         if (!is_string($final_file)) {
             var_dump("Arquivo inexistente");
@@ -35,7 +35,7 @@ class Loader
     }
 
     /**
-     * @param mixed $params
+     * @param array<string, mixed> $params
      */
     public function loadTemplateView(string $viewName, $params = []): void
     {

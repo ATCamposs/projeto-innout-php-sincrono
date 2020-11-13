@@ -27,19 +27,25 @@ class ModelConfig
     /**
      * @param array<string, string> $arr
      */
-    public function __construct($arr)
+    public function __construct($arr, bool $sanitize = true)
     {
-        $this->loadFromArray($arr);
+        $this->loadFromArray($arr, $sanitize);
     }
 
     /**
      * @param array<string, string> $arr
      */
-    public function loadFromArray($arr): void
+    public function loadFromArray($arr, bool $sanitize = true): void
     {
-        if (!empty($arr)) {
-            foreach ($arr as $key => $value) {
-                $this->$key = $value;
+        if (empty($arr)) {
+            return;
+        }
+        foreach ($arr as $key => $value) {
+            $cleanValue = $value;
+            if ($sanitize && $cleanValue) {
+                $cleanValue = strip_tags(trim($cleanValue));
+                $cleanValue = \htmlentities($cleanValue, \ENT_NOQUOTES);
+                $this->$key = $cleanValue;
             }
         }
     }

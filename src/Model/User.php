@@ -3,10 +3,14 @@
 namespace Src\Model;
 
 use DateTime;
+use Src\Config\Database;
 use Src\Exceptions\ValidationException;
 
 class User extends Model
 {
+    /** @var string $id */
+    public static $id;
+
     /** @var string $name */
     public static $name;
 
@@ -47,6 +51,17 @@ class User extends Model
         return static::getCount(['raw' => 'end_date IS NULL']);
     }
 
+    public function delete(): void
+    {
+        static::deleteById($this->id);
+    }
+
+    public static function deleteById(string $id): void
+    {
+        $sql = "DELETE FROM " . static::$tableName . " WHERE id = {$id}";
+        Database::executeSQL($sql);
+    }
+
     public function validate(): void
     {
         $name = $this->name;
@@ -58,7 +73,7 @@ class User extends Model
 
         $errors = [];
         if (empty($name)) {
-            $errors['name'] = 'E-mail é um campo obrigatório.';
+            $errors['name'] = 'Nome é um campo obrigatório.';
         }
         if (empty($email)) {
             $errors['email'] = 'Por favor, informe um email.';
@@ -72,7 +87,11 @@ class User extends Model
         if (empty($confirm_password)) {
             $errors['confirm_password'] = 'Por favor, informe a senha.';
         }
-        if (!empty($password) && !empty($confirm_password) && $password != $confirm_password) {
+        if (
+            !empty($password) &&
+            !empty($confirm_password) &&
+            !password_verify($_POST['initial_pass'], $confirm_password)
+        ) {
             $errors['password'] = 'As duas senhas devem ser iguais.';
             $errors['confirm_password'] = 'As duas senhas devem ser iguais.';
         }
@@ -80,10 +99,10 @@ class User extends Model
             $errors['start_date'] = 'A data de Admissão é obrigatória.';
         }
         if (!empty($start_date) && !DateTime::createFromFormat('Y-m-d', $start_date)) {
-            $errors['email'] = 'Email inválido.';
+            $errors['start_date'] = 'Data está em formato incorreto.';
         }
-        if (!empty($end_date) && !DateTime::createFromFormat('Y-m-d', $end_date)) {
-            $errors['email'] = 'Email inválido.';
+        if ($end_date != "null" && !DateTime::createFromFormat('Y-m-d', $end_date)) {
+            $errors['end_date'] = 'Data está em formato incorreto.';
         }
 
         if (count($errors) > 0) {

@@ -8,6 +8,13 @@ echo '<main class="content">';
     'Acompanhe seu saldo de horas',
     'icofont-ui-calendar'
 );
+$user = isset($user) ? $user : (object) $user = [];
+$users = isset($users) ? $users : (object) $users = [];
+$selectedUserId = $selectedUserId ?? null;
+$selectedPeriod = $selectedUserId ?? null;
+$periods = isset($periods) ? $periods : (object) $periods = [];
+$sumOfWorkedTime = $sumOfWorkedTime ?? null;
+$balance = $balance ?? null;
 ?>
 <div>
     <form class="mb-4" action="#" method="post">

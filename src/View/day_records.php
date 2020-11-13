@@ -14,7 +14,9 @@ $records = !empty($records) ? $records : (object) [];
         'Mantenha seu ponto consistente !',
         'icofont-check-alt'
     );
+    if (!empty($exception)) {
         (new Messages())->errorMessage($exception);
+    }
     ?>
     <div class="card">
         <div class="card-header">
@@ -48,8 +50,8 @@ $records = !empty($records) ? $records : (object) [];
 
     <form class="mt-5" action="registro_forcado.php" method="post">
         <div class="input-group no-border">
-            <input type="text" name="forcedTime" class="form-control"
-                placeholder="Informe a hora para simular o batimento">
+            <input type="text" name="forcedTime" class="form-control" 
+            placeholder="Informe a hora para simular o batimento">
             <button class="btn btn-danger ml-3">
                 Simular Ponto
             </button>
