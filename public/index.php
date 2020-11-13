@@ -6,6 +6,7 @@ use Src\Controller\InNOut;
 use Src\Controller\LoginController;
 use Src\Controller\ManagerReportController;
 use Src\Controller\MonthlyReportController;
+use Src\Controller\UsersController;
 
 require_once __DIR__ . '/../src/Config/Config.php';
 
@@ -47,5 +48,10 @@ if ($uri === '/monthly_report.php') {
 
 if ($uri === '/manager_report.php') {
     $url = new ManagerReportController();
+    $url->index();
+}
+
+if ($uri === '/users.php') {
+    $url = new UsersController();
     $url->index();
 }
