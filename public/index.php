@@ -55,3 +55,8 @@ if ($uri === '/users.php') {
     $url = new UsersController();
     $url->index();
 }
+
+if ($uri === '/save_user.php') {
+    $url = new UsersController();
+    $url->saveUser();
+}
